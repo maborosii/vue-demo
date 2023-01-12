@@ -3,7 +3,7 @@
     <div>
         <div class="header">
             <div class="icon">
-                <i v-if="isCollapse" @click="expandmenu" class="iconfont icon-right-indent"></i>
+                <i v-if="!isCollapse" @click="expandmenu" class="iconfont icon-right-indent"></i>
                 <i v-else @click="expandmenu" class="iconfont icon-left-indent"></i>
             </div>
         </div>
@@ -13,6 +13,7 @@
 
 <script>
 export default {
+    props: ['isCollapse'],
     methods: {
         expandmenu() {
             this.$emit('changeMenu')

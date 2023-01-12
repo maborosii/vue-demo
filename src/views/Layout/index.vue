@@ -4,8 +4,8 @@
         <div class="menu">
             <Menu :isCollapse="isCollapse"></Menu>
         </div>
-        <div class="content">
-            <Content @changeMenu="changeMainMenu"></Content>
+        <div class="content" :class="{ active: isCollapse }">
+            <Content @changeMenu="changeMainMenu" :isCollapse="isCollapse"></Content>
         </div>
     </div>
 </template>
@@ -47,6 +47,10 @@ export default {
     }
     .content {
         padding-left: 200px;
+        background: #f8f8f8;
+    }
+    .active {
+        padding-left: 64px;
     }
 }
 </style>
