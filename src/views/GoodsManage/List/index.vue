@@ -22,20 +22,30 @@
             <el-button type="danger" size="small">批量删除</el-button>
         </div>
         <div class="goods-table">
-            <el-table :data="tableData" border stripe="true" style="width: 100%" height="450">
+            <el-table :data="tableData" border strip="true" style="width: 100%" height="450">
                 <el-table-column type="selection" width="40"></el-table-column>
                 <el-table-column fixed prop="date" label="日期" width="150"></el-table-column>
                 <el-table-column prop="name" label="姓名" width="120"></el-table-column>
                 <el-table-column prop="province" label="省份" width="80"></el-table-column>
                 <el-table-column prop="city" label="市区" width="80"></el-table-column>
-                <el-table-column prop="address" label="地址" width="300"></el-table-column>
+                <el-table-column
+                    prop="address"
+                    label="地址"
+                    width="180"
+                    show-overflow-tooltip
+                ></el-table-column>
                 <el-table-column prop="zip" label="邮编" width="120"></el-table-column>
-                <el-table-column prop="isEdit" label="可编辑" width="80"></el-table-column>
+                <el-table-column
+                    prop="edited(scope.row.isEdit)"
+                    label="可编辑"
+                    width="80"
+                ></el-table-column>
                 <el-table-column fixed="right" label="操作">
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
                             type="warning"
+                            icon="el-icon-search"
                             @click="handleDetail(scope.$index, scope.row)"
                         >
                             查看
@@ -43,7 +53,8 @@
                         <el-button
                             size="mini"
                             type="warning"
-                            disabled
+                            :disabled="!scope.row.isEdit"
+                            icon="el-icon-edit"
                             @click="handleEdit(scope.$index, scope.row)"
                         >
                             编辑
@@ -51,6 +62,7 @@
                         <el-button
                             size="mini"
                             type="danger"
+                            icon="el-icon-delete"
                             @click="handleDelete(scope.$index, scope.row)"
                         >
                             删除
@@ -70,110 +82,39 @@ export default {
                 name: '',
                 project: '',
             },
-            tableData: [
-                {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-08',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-06',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '是',
-                },
-                {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '否',
-                },
-                {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    isEdit: '否',
-                },
-            ],
+            tableData: [],
         }
     },
-    methods: {},
+    computed: {
+        edited(boolean) {
+            return boolean ? '是' : '否'
+        },
+    },
+    methods: {
+        handleDetail(index, row) {
+            console.log(index, row.isEdit)
+        },
+        handleEdit(index, row) {
+            console.log(index, row)
+        },
+        handleDelete(index, row) {
+            console.log(index, row)
+        },
+        async getMockGoodsList() {
+            try {
+                const result = await this.$api.getGoodsList()
+                if (result.data.code == 0) {
+                    this.tableData = result.data.data.data
+                }
+                //console.log(result.data.data.data);
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    },
+    mounted() {
+        this.getMockGoodsList()
+    },
 }
 </script>
 

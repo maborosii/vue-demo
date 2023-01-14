@@ -9,8 +9,11 @@ import './assets/css/reset.css'
 
 // iconfont 初始化
 import './assets/css/iconfont.css'
+import './mock/mock.js'
+import api from './api/index.js'
 
 Vue.config.productionTip = false
+Vue.prototype.$api = api
 
 new Vue({
     store,
